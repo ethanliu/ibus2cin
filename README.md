@@ -6,7 +6,7 @@
 
 
 <p align="center">
-    <img width="768" height="630" src="./term-sheet.svg">
+    <img width="768" src="https://rawgit.com/ethanliu/ibus2cin/master/term-sheet.svg?sanitize=true">
 </p>
 
 ## 使用方式
