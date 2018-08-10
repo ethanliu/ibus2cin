@@ -1,0 +1,26 @@
+[
+	{
+		"input": "./ibus2cin",
+		"output": [
+			"ibus2cin - version 2.0<br>Generate CIN table from iBus database provided by boshiamy.com.<br>This program is distributed to help legal users, but without any warranty.<br>It's not an official utility from boshiamy.com, please use it well.<br>Source repo: https://github.com/ethanliu/ibus2cin<br><br>Usage:<br>  ./ibus2cin <span style=\"color:#33BBC8\">[OPTIONS]</span> <span style=\"color:#ADAD27\">iBus-file</span><br><br>Examples:<br>  ./ibus2cin <span style=\"color:#ADAD27\">boshiamy-ibus-1-8-x/boshiamy_t.db</span><br>  ./ibus2cin <span style=\"color:#33BBC8\">-v</span> 1.1 <span style=\"color:#ADAD27\">boshiamy-ibus/boshiamy_t.db</span><br>  ./ibus2cin <span style=\"color:#33BBC8\">-v</span> 1.1 <span style=\"color:#33BBC8\">-o</span> <span style=\"color:#C23621\">boshiamy.cin</span> <span style=\"color:#ADAD27\">boshiamy-ibus/boshiamy_t.db</span><br><br>Options:<br>  -o string<br>    Export file path (default \"[iBus-file].cin\")<br>  -v string<br>    Boshiamy cin table version (default \"2.1\")",
+			"<br>"
+		]
+	},
+	{
+		"input": "./ibus2cin boshiamy_t.db",
+		"output": [
+			"Table Version: 2.1",
+			"input: boshiamy_t.db",
+			"output: boshiamy_t.cin",
+			"<br>"
+		]
+	},
+	{
+		"input": "./ibus2cin -v 1.1 -o liu.cin boshiamy_j.db",
+		"output": [
+			"Table Version: 1.1",
+			"input: boshiamy_j.db",
+			"output: liu.cin"
+		]
+	}
+]

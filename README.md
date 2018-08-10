@@ -1,52 +1,67 @@
-# ibus2cin is a tool to export from IBus table for Boshiamy to cin table.
+# ibus2cin
 
-嘸蝦米表格版權上的問題不再贅述，但似乎並非所有版本的嘸蝦米都有附上 cin 表格，例如 Boshiamy X1 for Mac 也只有安裝後才能取出的 liu-uni*.tab，而編碼後的檔案轉換上也麻煩一點，所幸行易官方也提供了其他不同平台的輸入法，其中 IBus 所使用的輸入法參考檔為 sqlite 格式，也比較容易在不同平台上轉換，所以這篇在說明如何將 IBus 中的參考檔轉出 cin 表格備用，往後有在不同平台上使用時，要再次轉換也比較方便，而且 IBus 版本中的表格是含有 rvfs 字根的。
+[![GitHub release](https://img.shields.io/badge/release-v2.0-green.svg)](https://github.com/ethanliu/ibus2cin/releases/)
 
-請閱讀表格授權聲明，也別忘記合法使用者的權利
+將行易官網提供的嘸蝦米 iBus 表格，轉換為一般通用的 CIN 表格工具程式
 
-> 本公司授權合法持有嘸蝦米輸入法 7.0 非試用版之使用者自行利用，惟使用者不得任意更改此表格中每個字的編碼規則以及本套件之任何內容，亦不得以轉換格式或片段節錄等任何方法重新散佈！此表格授權使用範圍與使用者持有之授權合約書所載範圍相同，其他未載明之事項，一律依原授權合約書內容辦理之。
 
-## Requirements
-- boshiamy-ibus.tar.gz - 請由[行易網站下載 IBus](http://boshiamy.com/member_download.php) (需登入網站會員)
-- ibus2cin - 簡單的轉換程式，可由文末下載
-- sqlite3 - Mac/*nix 系統大部份已內建，Windows 版本則已含在下載檔中。或請至 [sqlite.org](http://www.sqlite.org/download.html) 下載 command-line shell.
+<p align="center">
+    <img width="700" height="620" src="https://raw.githubusercontent.com/ethanliu/ibus2cin/master/term-sheet.svg">
+</p>
 
-## Getting Started
-boshiamy-ibus.tar.gz 解壓縮後，有四個表格參考檔，分別是:
+## 使用方式
+
+將 ibus2cin 或 ibus2cin.exe 與自行易官網下載的 iBus 檔案解壓縮後，存放於同一個資料夾。  
+開放終端機或命令列視窗，切換至此資料夾下，並執行 ibus2cin，Windows 平台則是執行 ibus2cin.exe
+
+    > ./ibus2cin
+
+    ibus2cin - version 2.0
+    Generate CIN table from iBus database provided by boshiamy.com.
+    This program is distributed to help legal users, but without any warranty.
+    It's not an official utility from boshiamy.com, please use it well.
+    Source repo: https://github.com/ethanliu/ibus2cin
+
+        語法:
+          ./ibus2cin [參數] iBus-表格檔
+
+        範例:
+          ./ibus2cin boshiamy-ibus-1-8-x/boshiamy_t.db
+          ./ibus2cin -v 1.1 boshiamy-ibus/boshiamy_t.db
+          ./ibus2cin -v 1.1 -o boshiamy.cin boshiamy-ibus/boshiamy_t.db
+
+        參數:
+          -o string
+                輸出的 CIN 表格檔名 (預設為 "[iBus-表格檔].cin")
+          -v string
+                嘸蝦米表格檔版本 (預設為 "2.1")
+
+
+### 什麼是 iBus
+[iBus](https://zh.wikipedia.org/wiki/IBus) 是在 Linux 平台下的輸入法框架之一。  
+例如奇摩輸入法、gcin、香草輸入法、OkidoKey 等，分別為在不同平台下的輸入法框架，皆以使用輸入法表格檔來支援各種輸入法。
+
+### 如何取得嘸蝦米 iBus 表格檔
+請於行易官方網站，登入會員後，進入[會員下載專區](http://boshiamy.com/member_download.php)，於 Linux 支援區塊，選擇 IBus table 或 IBus (ibus-table > 1.8.0) 任一版本。
+檔案下載解壓縮後，僅需副檔名為 db 的檔案，此則為 iBus 表格檔。
 
 - boshiamy_c.db - 簡體輸入，即 ,,C 模式
 - boshiamy_ct.db - 繁體輸入簡體輸出，即 ,,CT 模式
 - boshiamy_j.db - 日文輸入，即 ,,J 模式
 - boshiamy_t.db - 繁體輸入，即 ,,T 一般模式
 
-解壓縮 ibus2cin.zip 後，分別有以下檔案
 
-- header.txt - cin 表格需要的設定部份
-- ibus2cin.bat - 給 Windows 使用的執行檔
-- ibus2cin.sh - 給 Mac/*nix 使用的執行檔
-- parse.sql - 匯出使用的 sqlite3 query 命令
-- sqlite3.exe - 給 Windows 使用的 sqlite3 執行檔。
+### 如何區分嘸蝦米表格檔版本
+於會員下載專區，點選該項目的相關資訊，再點選版本說明，即可看到嘸蝦米表格檔實際版本。   
+目前行易官網所提供的版本
 
-## Usage
-選擇你想要轉換的 IBus 參考檔，以下都以繁體輸入 boshiamy_t.db 為例。
-將 boshiamy_t.db 複製到剛剛解開的 ibus2cin 資料夾中，接下來的動作都要在命令列執行。
+- boshiamy-ibus-1-8-x.tar.gz 版本 2.1
+- boshiamy-ibus.tar.gz 版本 1.1
 
-##### Syntax
-    ibus2cin IBus表格檔案名稱 產生的cin檔案名稱
+### 修正
 
-##### on Mac
-    sh ./ibus2cin.sh boshiamy_t.db boshiamy_t.cin
+如果您先前曾使用 v2.0 之前的版本，請重新以 v2.0 重新產生新的 CIN 表格檔。  
+舊版有兩個字根判斷錯誤，因此有些符號會無法組字。
 
-##### on Windows
-    ibus2cin.bat boshiamy_t.db boshiamy_t.cin
 
-新產生的 boshiamy_t.cin 使是所需要的 cin 表格。如果你轉換的不是一般模式的繁體，那麼在轉換後你可能會需要修改 cin 檔頭的兩個設定，或是轉換前先行修改 header.txt，兩個設定是 %ename 及 %cname 分別只是指該字根代表的輸入法的英/中文識別，並不影響輸入法的行為。 .cin 為一般的文字檔，使用任何的純文字編輯器皆可，例如記事本，存檔時請確認儲存為 UTF-8 格式。
-
-而當然的，如果想要在 iPhone, iPad 上使用，將此檔案至 [zhim! converter](http://creativecrap.com/app/zhim-extended-dictionary-converter) 進行轉換即可。
-
-## Troubleshooting
-
-由於 sqlite3 需要有可寫入權限的檔案系統，所以如果在轉換時遇到下面的錯誤訊息，請除了檢查 *.db 檔案的寫入權限之外，也請檢查 ibus2cin 資料夾的寫入權限。
-
-> file is encrypted or is not a database then most probably your code is accessing a SQLite3 database.
 
