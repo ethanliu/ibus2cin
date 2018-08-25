@@ -12,7 +12,7 @@
 ## 使用方式
 
 將 ibus2cin 或 ibus2cin.exe 與自行易官網下載的 iBus 檔案解壓縮後，存放於同一個資料夾。  
-開放終端機或命令列視窗，切換至此資料夾下，並執行 ibus2cin，Windows 平台則是執行 ibus2cin.exe
+開啟終端機或命令列視窗，切換至此資料夾下後執行 ibus2cin，Windows 平台則是執行 ibus2cin.exe
 
     > ./ibus2cin
 
