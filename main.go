@@ -272,7 +272,7 @@ func export() {
 func init() {
 	flag.Usage = usage
 	flag.StringVar(&tableVersion, "v", defaultTableVersion, "Boshiamy cin table version")
-	flag.StringVar(&outputFilePath, "o", defaultOuptputFileName, "Export file path")
+	flag.StringVar(&outputFilePath, "o", defaultOuptputFileName, "Output file path")
 }
 
 func main() {
