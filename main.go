@@ -4,7 +4,7 @@
  * https://github.com/ethanliu/ibus2cin
  *
  * @author Ethan Liu - https://creativecrap.com
- * @version: 2.0.1
+ * @version: 2.0.2
  *
  */
 
@@ -35,11 +35,11 @@ var inputFilePath string
 var outputFilePath string
 
 func usage() {
-	fmt.Println("ibus2cin - version 2.0.1")
-	fmt.Println("Generate CIN table from iBus database provided by boshiamy.com.")
-	fmt.Println("This program is distributed to help legal users, but without any warranty.")
-	fmt.Println("It's not an official utility from boshiamy.com, please use it well.")
-	fmt.Println("Source repo: https://github.com/ethanliu/ibus2cin")
+	fmt.Println("ibus2cin - version 2.0.2")
+	fmt.Println("Generate CIN table from the iBus database provided by boshiamy.com.")
+	fmt.Println("This program is distributed to help legal users but without any warranty.")
+	fmt.Println("Source code repo: https://github.com/ethanliu/ibus2cin")
+	// fmt.Println("It's not an official utility from boshiamy.com, please use it well.")
 	fmt.Println("")
 	fmt.Printf("Usage:\n  %s [OPTIONS] iBus-file \n\n", os.Args[0])
 	fmt.Println("Examples:")
