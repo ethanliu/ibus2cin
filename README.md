@@ -1,6 +1,6 @@
 # ibus2cin
 
-[![GitHub release](https://img.shields.io/badge/release-v2.0.1-green.svg)](https://github.com/ethanliu/ibus2cin/releases/)
+[![GitHub release](https://img.shields.io/badge/release-v2.0.2-green.svg)](https://github.com/ethanliu/ibus2cin/releases/)
 
 將行易官網提供的嘸蝦米 iBus 表格，轉換為一般通用的 CIN 表格工具程式
 
@@ -18,11 +18,10 @@
 
     > ./ibus2cin
 
-    ibus2cin - version 2.0.1
+    ibus2cin - version 2.0.2
     Generate CIN table from iBus database provided by boshiamy.com.
     This program is distributed to help legal users, but without any warranty.
-    It's not an official utility from boshiamy.com, please use it well.
-    Source repo: https://github.com/ethanliu/ibus2cin
+    Source code repo: https://github.com/ethanliu/ibus2cin
 
         語法:
           ./ibus2cin [參數] iBus-表格檔
@@ -42,7 +41,7 @@
 ### 什麼是 iBus
 
 [iBus](https://zh.wikipedia.org/wiki/IBus) 是在 Linux 平台下的輸入法框架之一。  
-例如奇摩輸入法、gcin、香草輸入法、OkidoKey 等，分別為在不同平台下的輸入法框架，皆以使用輸入法表格檔來支援各種輸入法。
+例如奇摩輸入法、gcin、香草輸入法、Frankie / OkidoKey 等，分別為在不同平台下的輸入法框架，皆以使用輸入法表格檔來支援各種輸入法。
 
 ### 如何取得嘸蝦米 iBus 表格檔
 
@@ -64,12 +63,16 @@
 - boshiamy-ibus.tar.gz 版本 1.1
 
 
-
 # Changelog
+
+### 2.0.2 - 2020-05-25
+
+- changed: text description and typo
+- fixed: pass "Println arg list ends with redundant newline" test warning
 
 ### 2.0.1 - 2019-09-17
 
-- chagned: selkey starts from 0 instead of 1
+- changed: selkey starts from 0 instead of 1
 
 ### 2.0.0 - 2018-07
 
