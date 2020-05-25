@@ -39,7 +39,8 @@ func usage() {
 	fmt.Println("Generate CIN table from iBus database provided by boshiamy.com.")
 	fmt.Println("This program is distributed to help legal users, but without any warranty.")
 	fmt.Println("It's not an official utility from boshiamy.com, please use it well.")
-	fmt.Println("Source repo: https://github.com/ethanliu/ibus2cin\n")
+	fmt.Println("Source repo: https://github.com/ethanliu/ibus2cin")
+	fmt.Println("")
 	fmt.Printf("Usage:\n  %s [OPTIONS] iBus-file \n\n", os.Args[0])
 	fmt.Println("Examples:")
 	fmt.Printf("  %s boshiamy-ibus-1-8-x/boshiamy_t.db \n", os.Args[0])
@@ -165,7 +166,7 @@ func exportV1_1(db *sql.DB) string {
 	_, err := db.Exec(query)
 	// checkError(err)
 	if err != nil {
-		fmt.Println("Error: Table Version mismatch, please try with another version\n")
+		fmt.Println("Error: Table Version mismatch, please try with another version.")
 		usage()
 	}
 
@@ -198,7 +199,7 @@ func exportV2_1(db *sql.DB) string {
 	rows, err := db.Query("SELECT tabkeys AS root, phrase FROM phrases ORDER BY id ASC")
 	// checkError(err)
 	if err != nil {
-		fmt.Println("Error: Version mismatch, please try with another version\n")
+		fmt.Println("Error: Version mismatch, please try with another version.")
 		usage()
 	}
 
