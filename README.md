@@ -62,6 +62,15 @@
 - boshiamy-ibus-1-8-x.tar.gz 版本 2.1
 - boshiamy-ibus.tar.gz 版本 1.1
 
+# Build
+
+Install ming-w64 for building windows platform
+
+    brew install ming-w64
+
+Build with make, check Makefile for detail or `make` for usage
+
+    make all
 
 # Changelog
 
