@@ -74,6 +74,10 @@ Build with make, check Makefile for detail or `make` for usage
 
 # Changelog
 
+### 3.0.0
+
+- added: python + tk
+
 ### 2.0.2 - 2020-05-25
 
 - changed: text description and typo
