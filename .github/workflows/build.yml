@@ -34,6 +34,9 @@ jobs:
           name: release_url
           path: release_url.txt
 
+      - name: Display structure
+        run: ls -R
+
   build:
     name: Build Dist
     needs: release
@@ -84,12 +87,16 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: release_url
+          # path: release_url #v1
+
+      - name: Display structure of downloaded files
+        run: ls -R
 
       - name: Get Release File Name & Upload URL
         id: get_release_info
         shell: bash
         run: |
-          value=`cat release_url/release_url.txt`
+          value=`cat release_url.txt`
           echo ::set-output name=upload_url::$value
 
       - name: Upload Release Asset
