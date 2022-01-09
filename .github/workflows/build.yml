@@ -3,11 +3,8 @@ name: Build
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-#     branches: [ master ]
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
-  # pull_request:
-  #   branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -38,26 +35,33 @@ jobs:
           path: release_url.txt
 
   build:
-    name: Build
-    needs: release
+    name: Build Dist
+    # needs: release
     runs-on: ${{ matrix.os }}
+    env:
+      APP_NAME: "ibus2cin-gui"
     strategy:
       matrix:
         include:
           - os: macos-latest
             TARGET: macos
             CMD_BUILD: >
-              pyinstaller -F -w -n ibus2cin-gui -i src/main.py &&
+              pyinstaller -F -w -n ${{ env.APP_NAME }} src/main.py &&
               cd dist/ &&
-              zip -r9 ibus2cin-gui ibus2cin-gui.app/
-            OUT_FILE_NAME: ibus2cin-gui.zip
+              zip -r9 ${{ env.APP_NAME }} ${{ env.APP_NAME }}.app/
+            OUT_FILE_NAME: ${{ env.APP_NAME }}-macos.zip
             ASSET_MIME: application/zip
 
           - os: windows
             TARGET: windows
-            CMD_BUILD: pyinstaller -F -w -n ibus2cin-gui -i src/main.py
-            OUT_FILE_NAME: ibus2cin-gui.exe
-            ASSET_MIME: application/vnd.microsoft.portable-executable
+            CMD_BUILD: >
+              pyinstaller -F -w -n ${{ env.APP_NAME }} src/main.py &&
+              cd dist/ &&
+              zip -r9 ${{ env.APP_NAME }} ${{ env.APP_NAME }}.exe
+            OUT_FILE_NAME: ${{ env.APP_NAME }}-win.zip
+            ASSET_MIME: application/zip
+            # OUT_FILE_NAME: ${{ env.APP_NAME }}.exe
+            # ASSET_MIME: application/vnd.microsoft.portable-executable
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
