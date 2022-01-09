@@ -48,8 +48,8 @@ jobs:
             TARGET: macos
             CMD_BUILD: >
               pyinstaller -F -w -n ibus2cin-gui src/main.py &&
-              cd dist/ &&
-              zip -r9 ibus2cin-gui-macos ibus2cin-gui.app/
+              cd dist &&
+              zip -r9 ibus2cin-gui-macos ibus2cin-gui.app
             OUT_FILE_NAME: ibus2cin-gui-macos.zip
             ASSET_MIME: application/zip
 
@@ -57,8 +57,8 @@ jobs:
             TARGET: windows
             CMD_BUILD: >
               pyinstaller -F -w -n ibus2cin-gui src/main.py &&
-              cd dist/ &&
-              zip -r9 ibus2cin-gui-win ibus2cin-gui.exe
+              cd dist &&
+              powershell Compress-Archive ibus2cin-gui.exe ibus2cin-gui-win.zip
             OUT_FILE_NAME: ibus2cin-gui-win.zip
             ASSET_MIME: application/zip
             # OUT_FILE_NAME: ibus2cin-gui.exe
