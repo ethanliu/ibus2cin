@@ -49,7 +49,7 @@ jobs:
             CMD_BUILD: >
               pyinstaller -F -w -n ibus2cin-gui src/main.py &&
               cd dist/ &&
-              zip -r9 ibus2cin-gui ibus2cin-gui.app/
+              zip -r9 ibus2cin-gui-macos ibus2cin-gui.app/
             OUT_FILE_NAME: ibus2cin-gui-macos.zip
             ASSET_MIME: application/zip
 
@@ -58,7 +58,7 @@ jobs:
             CMD_BUILD: >
               pyinstaller -F -w -n ibus2cin-gui src/main.py &&
               cd dist/ &&
-              zip -r9 ibus2cin-gui ibus2cin-gui.exe
+              zip -r9 ibus2cin-gui-win ibus2cin-gui.exe
             OUT_FILE_NAME: ibus2cin-gui-win.zip
             ASSET_MIME: application/zip
             # OUT_FILE_NAME: ibus2cin-gui.exe
