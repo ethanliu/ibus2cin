@@ -18,9 +18,29 @@ from tkinter import filedialog
 from tkinter import messagebox
 from datetime import datetime
 from webbrowser import open_new_tab
+from enum import Enum
+
+
+class T(Enum):
+    InputLabel = "Choose an iBus file, i.e. boshiamy_t.db"
+    OutputLabel = "Convert to CIN table file"
+    InputButton = "Select..."
+    OutputButton = "Convert"
+    FileDialogDescription = "Select SQLite file"
+    Copyright = "This program is distributed to help legal users but without any warranty.\nhttps://github.com/ethanliu/ibus2cin"
+    ErrorFileNotFound = 'File not found {0}'
+    ErrorFileOpenFailed = 'The file is invalid or corrupt and cannot be opened {0}'
+    ErrorFileCorrupt = 'Invalid or corrupt file {0}'
+    FileSaved = 'The CIN table file "{0}" has been saved'
+    FileSaveFailed = 'Failed to save CIN table file {0}\n\n{1}'
+
+    def __str__(self):
+        return self.value
+
+
 
 class Generator():
-    headerTemplate = '''# The table was generated at {datetime} by ibus2cin conversion tool
+    headerTemplate = '''# The table was generated at {datetime} by ibus2cin utility
 # https://github.com/ethanliu/ibus2cin
 #
 %gen_inp
@@ -67,11 +87,8 @@ z z
     footerTemplate = "%chardef end"
 
     def __init__(self, dbPath, cinPath):
-        print(dbPath)
-        print(cinPath)
-
         if dbPath == "" or os.path.isfile(dbPath) == False:
-            messagebox.showerror(title = "Error", message = f'無法讀取資料庫檔案 "%s"' % (os.path.basename(dbPath)))
+            messagebox.showerror(title = "Error", message = f"{T.ErrorFileNotFound}".format(os.path.basename(dbPath)))
             return
 
         try:
@@ -79,13 +96,12 @@ z z
             db.row_factory = sqlite3.Row
             cursor = db.cursor()
         except Error:
-            messagebox.showerror(title = "Error", message = f'無法讀取資料庫檔案 "%s"' % (os.path.basename(dbPath)))
+            messagebox.showerror(title = "Error", message = f"{T.ErrorFileOpenFailed}".format(os.path.basename(dbPath)))
             return
 
-        try:
-            info = self.parseAttrs(cursor)
-        except Error:
-            messagebox.showerror(title = "Error", message = f'無法讀取資料庫檔案 "%s"，檔案可能以損毀或不正確，請重新從行易官網下載 iBus Table 檔案' % (os.path.basename(dbPath)))
+        info = self.parseAttrs(cursor)
+        if info == None:
+            messagebox.showerror(title = "Error", message = f"{T.ErrorFileCorrupt}".format(os.path.basename(dbPath)))
             return
 
         # print(info)
@@ -100,27 +116,23 @@ z z
         )
         suffix = self.footerTemplate
 
-        fp = open(cinPath, "w")
-        fp.write(prefix + content + suffix)
-        fp.close()
-
-        messagebox.showinfo(title = "Done", message = f'CIN 格式字根表檔案 "%s" 已儲存完成' % (os.path.basename(cinPath)))
+        try:
+            with open(cinPath, "w", encoding="utf-8") as fp:
+                fp.write(prefix + content + suffix)
+                messagebox.showinfo(title = "Success", message = f"{T.FileSaved}".format(os.path.basename(cinPath)))
+        except Exception as e:
+            messagebox.showerror(title = "Error", message = f"{T.FileSaveFailed}".format(os.path.basename(cinPath), e))
 
 
     def parseAttrs(self, cursor):
         try:
             cursor.execute('SELECT attr, val FROM ime')
         except Error:
-            print('a')
-            print(Error)
-            return
+            return None
         rows = dict(cursor.fetchall())
-        print(str(rows['name.zh_tw']))
-        print(rows['serial_number'])
         return rows
 
     def parseContent(self, cursor):
-        print("run")
         try:
             cursor.execute('SELECT tabkeys FROM phrases')
         except Error:
@@ -155,7 +167,7 @@ class App(ttk.Frame):
         ttk.Frame.__init__(self, root)
         self.version = '3.0.0'
         root.title("ibus2cin - " + self.version)
-        root.geometry('480x400')
+        root.geometry('480x360')
         root.resizable(False, False)
 
         self.root = root
@@ -167,24 +179,24 @@ class App(ttk.Frame):
 
         # body = tk.Frame(root, bg = '#4D92C5')
         body = tk.Frame(root)
-        body.pack(side = "top", fill = "both", expand = True)
+        body.pack(side = "top", fill = "both", expand = True, padx = 20, pady = 20)
 
         self.header = tk.Frame(body)
-        self.contianer = tk.Frame(body)
+        self.contianer = tk.Frame(body, pady = 20)
         self.footer = tk.Frame(body)
 
         # body.grid(sticky = "nsew")
-        self.header.grid(row = 0, column = 0)
-        self.contianer.grid(row = 1, column = 0)
-        self.footer.grid(row = 2, column = 0)
+        # self.header.grid(row = 0, column = 0)
+        # self.contianer.grid(row = 1, column = 0)
+        # self.footer.grid(row = 2, column = 0)
 
-        body.grid_rowconfigure(0, weight = 2)
-        body.grid_rowconfigure(1, weight = 7)
-        body.grid_rowconfigure(2, weight = 1)
+        # body.grid_rowconfigure(0, weight = 2)
+        # body.grid_rowconfigure(1, weight = 7)
+        # body.grid_rowconfigure(2, weight = 1)
 
-        # self.header.pack()
-        # self.contianer.pack()
-        # self.footer.pack()
+        self.header.pack()
+        self.contianer.pack(fill = 'x', expand = True, padx = 40)
+        self.footer.pack(fill = 'x', expand = True)
 
         self.layoutViews()
         self.defineStyles()
@@ -197,6 +209,7 @@ class App(ttk.Frame):
         style.configure('Logo.TLabel', font = ('Helvetica', 80, 'bold'), foreground = 'black')
         style.configure('Branding.TLabel', font = ('Helvetica', 24), foreground = '#000000')
         style.configure('Heading.TLabel', font = ('Helvetica', 16), foreground = '#000000')
+        style.configure('Trailing.TLabel', font = ('Helvetica', 10), foreground = '#666')
 
 
     def layoutViews(self):
@@ -223,53 +236,57 @@ class App(ttk.Frame):
 
         root.config(menu = menu)
 
-
     def addHeaderView(self, parent):
-        ttk.Label(parent, text = '無', style = 'Logo.TLabel').grid(row = 0, column = 0, rowspan = 8, pady = (20, 20), padx = (0, 20))
-        ttk.Label(parent, text = "").grid(row = 0, column = 3)
-        ttk.Label(parent, text = "").grid(row = 1, column = 3, pady = (10, 0))
-        ttk.Label(parent, text = 'ibus2cin', style = 'Branding.TLabel').grid(row = 2, column = 3, sticky = W, pady = (0, 0))
-        ttk.Label(parent, text = 'Ver.' + self.version).grid(row = 3, column = 3, sticky = W, pady = (0, 0))
-        ttk.Label(parent, text = 'CIN Table Conversion Tool').grid(row = 4, column = 3, sticky = W)
-        ttk.Label(parent, text = "").grid(row = 5, column = 3)
-        ttk.Label(parent, text = "").grid(row = 6, column = 3)
+        left = tk.Frame(parent)
+        right = tk.Frame(parent)
+        left.grid(row = 0, column = 0, padx = (0, 10))
+        right.grid(row = 0, column = 1)
+
+        ttk.Label(left, text = '無', style = 'Logo.TLabel').grid(row = 0, column = 0)
+        ttk.Label(right, text = 'ibus2cin', style = 'Branding.TLabel').grid(row = 0, column = 1, sticky = 'WS')
+        ttk.Label(right, text = 'Ver.' + self.version).grid(row = 1, column = 1, sticky = 'W')
+        ttk.Label(right, text = 'CIN Table Conversion Tool').grid(row = 2, column = 1, sticky = 'WN')
 
     def addFooterView(self, parent):
-        label = ttk.Label(parent, text = "This program is distributed to help legal users but without any warranty.", padding = 10, anchor = W)
-        label.grid(row = 0, column = 0, columnspan = 5, sticky=W+E, pady = (40, 0))
+        label = tk.Label(parent, text = T.Copyright, font = ('Helvetica', 10), fg='#666')
+        label.pack()
 
     def addContainerView(self, parent):
 
         def selectFile():
-            path = filedialog.askopenfilename(title = "Select file", filetypes = [("SQLite File", "*.db")], initialdir = os.path.dirname(__file__))
+            path = filedialog.askopenfilename(title = T.FileDialogDescription, filetypes = [("SQLite File", "*.db")], initialdir = os.path.dirname(__file__))
             self.basedir = os.path.dirname(path)
             self.inputFilename.set(os.path.basename(path))
             self.outputFilename.set(os.path.basename(path.replace('.db', '.cin')))
 
             if path == None or path == "":
-                outputTextField['state'] = tk.DISABLED
-                convertButton['state'] = tk.DISABLED
+                outputFilenameEntry['state'] = tk.DISABLED
+                outputButton['state'] = tk.DISABLED
             else:
-                outputTextField['state'] = tk.NORMAL
-                convertButton['state'] = tk.NORMAL
+                outputFilenameEntry['state'] = tk.NORMAL
+                outputButton['state'] = tk.NORMAL
 
             # inputTextField.delete(0, END)
             # inputTextField.insert(0, os.path.basename(path))
 
-        inputTextField = ttk.Entry(parent, width = 30, textvariable = self.inputFilename, state = DISABLED)
-        outputTextField = ttk.Entry(parent, width = 30, textvariable = self.outputFilename, state = DISABLED)
+        inputLabel = ttk.Label(parent, text = T.InputLabel)
+        inputFilenameEntry = ttk.Entry(parent, state = DISABLED, textvariable = self.inputFilename)
+        inputButton =ttk.Button(parent, text = T.InputButton, command = selectFile)
 
-        selectFileButton = ttk.Button(parent, text = 'Open', command = selectFile)
-        convertButton = ttk.Button(parent, text = 'Convert', state = DISABLED, command = self.performConvert)
+        outputLabel = ttk.Label(parent, text = T.OutputLabel)
+        outputFilenameEntry = ttk.Entry(parent, state = DISABLED, textvariable = self.outputFilename)
+        outputButton =ttk.Button(parent, text = T.OutputButton, state = DISABLED, command = self.performConvert)
 
-        ttk.Label(parent, text = "iBus Table").grid(row = 0, column = 0, pady = 5)
-        ttk.Label(parent, text = "CIN Table").grid(row = 1, column = 0, pady = 5)
-        ttk.Label(parent, text = 'Choose an boshimay iBus Table file to continue...', style = 'Heading.TLabel').grid(row = 2, column = 0, columnspan = 4, pady = (20, 10), padx = (30, 0))
+        inputLabel.grid(row = 0, column = 0, columnspan = 2, sticky = 'WE', pady = 5)
+        inputFilenameEntry.grid(row = 1, column = 0, sticky = 'WE')
+        inputButton.grid(row = 1, column = 1, sticky = 'E')
 
-        inputTextField.grid(row = 0, column = 1, columnspan = 5)
-        outputTextField.grid(row = 1, column = 1, columnspan = 5)
-        selectFileButton.grid(row = 3, column = 1, pady = (0, 0))
-        convertButton.grid(row = 3, column = 2, pady = (0, 0))
+        outputLabel.grid(row = 2, column = 0, columnspan = 2, sticky = 'WE', pady = (10, 5))
+        outputFilenameEntry.grid(row = 3, column = 0, sticky = 'WE')
+        outputButton.grid(row = 3, column = 1, sticky = 'E')
+
+        parent.grid_columnconfigure(0, weight = 9)
+        parent.grid_columnconfigure(1, weight = 1)
 
 
 def main():

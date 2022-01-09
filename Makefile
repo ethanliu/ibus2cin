@@ -22,7 +22,14 @@ usage:
 
 config:
 	@[ -d "bin" ] || mkdir -p "bin"
+	@[ -d "build" ] || mkdir -p "build"
 	@[ -d "dist" ] || mkdir -p "dist"
+
+py:
+# pyinstaller --windowed --noconsole --onefile src/main.py
+	@-rm -fr build/*
+	@-rm -fr dist/*
+	pyinstaller main.spec
 
 clean: config cleanbin
 	@-rm -fr dist/*
