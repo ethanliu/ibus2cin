@@ -36,31 +36,29 @@ jobs:
 
   build:
     name: Build Dist
-    # needs: release
+    needs: release
     runs-on: ${{ matrix.os }}
-    env:
-      APP_NAME: "ibus2cin-gui"
     strategy:
       matrix:
         include:
           - os: macos-latest
             TARGET: macos
             CMD_BUILD: >
-              pyinstaller -F -w -n ${{ env.APP_NAME }} src/main.py &&
+              pyinstaller -F -w -n ibus2cin-gui src/main.py &&
               cd dist/ &&
-              zip -r9 ${{ env.APP_NAME }} ${{ env.APP_NAME }}.app/
-            OUT_FILE_NAME: ${{ env.APP_NAME }}-macos.zip
+              zip -r9 ibus2cin-gui ibus2cin-gui.app/
+            OUT_FILE_NAME: ibus2cin-gui-macos.zip
             ASSET_MIME: application/zip
 
           - os: windows
             TARGET: windows
             CMD_BUILD: >
-              pyinstaller -F -w -n ${{ env.APP_NAME }} src/main.py &&
+              pyinstaller -F -w -n ibus2cin-gui src/main.py &&
               cd dist/ &&
-              zip -r9 ${{ env.APP_NAME }} ${{ env.APP_NAME }}.exe
-            OUT_FILE_NAME: ${{ env.APP_NAME }}-win.zip
+              zip -r9 ibus2cin-gui ibus2cin-gui.exe
+            OUT_FILE_NAME: ibus2cin-gui-win.zip
             ASSET_MIME: application/zip
-            # OUT_FILE_NAME: ${{ env.APP_NAME }}.exe
+            # OUT_FILE_NAME: ibus2cin-gui.exe
             # ASSET_MIME: application/vnd.microsoft.portable-executable
 
     # Steps represent a sequence of tasks that will be executed as part of the job
