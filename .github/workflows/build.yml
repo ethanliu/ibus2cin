@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  buildrelease:
+  release:
     name: Create Release
     runs-on: [ubuntu-latest]
     steps:
@@ -32,14 +32,14 @@ jobs:
         run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
 
       - name: Save Release URL File for publish
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: release_url
           path: release_url.txt
 
   build:
     name: Build
-    needs: buildrelease
+    needs: release
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -74,7 +74,7 @@ jobs:
         run: ${{ matrix.CMD_BUILD }}
 
       - name: Load Release URL File from release job
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: release_url
 
