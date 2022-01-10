@@ -8,17 +8,32 @@ jobs:
   test:
     name: test
     runs-on: macos-latest
+    # runs-on: macos-10.15
     strategy:
-      matrix:
-        version: ['3.9', '3.10.0', '3.10.1']
+    runs-on: macos-latest
+        version: ['3.9', '3.10.1']
 
     steps:
       - uses: actions/checkout@v2
 
+      # - name: Setup Python
+      #   uses: actions/setup-python@v2
+      #   with:
+      #     python-version: ${{ matrix.version }}
+
       - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.version }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install python3 python3-pip python3-pytest python3-tk tk-dev
+          ls /usr/bin
+          sudo rm /usr/bin/python
+          # sudo ln -s /usr/bin/pyto
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+          pip install tk
 
       - name: test
         run: python -c 'import tkinter'
