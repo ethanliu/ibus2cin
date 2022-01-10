@@ -12,8 +12,8 @@ on:
 jobs:
   test:
     name: test2
-    runs-on: macos-latest
-    # runs-on: macos-10.15
+    # runs-on: macos-latest
+    runs-on: macos-10.15
     strategy:
       matrix:
         version: ['3.9', '3.10.1']
@@ -21,13 +21,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # - name: Setup Python
-      #   uses: actions/setup-python@v2
-      #   with:
-      #     python-version: ${{ matrix.version }}
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.version }}
 
       - name: test env
         run: |
+          which python
           which brew
           which port
 
@@ -42,8 +43,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyinstaller
           # pip install tk
+          pip install pyinstaller
 
       - name: Test tk
         run: python -c 'import tkinter'
