@@ -30,7 +30,7 @@ jobs:
         run: |
           which python
           which brew
-          which port
+          # which port
 
       # - name: Setup Python
       #   run: |
