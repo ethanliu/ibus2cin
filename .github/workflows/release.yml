@@ -101,8 +101,8 @@ jobs:
 
       - name: Build Windows Executable
         run: |
-          pyinstaller --onefile --windowed \
-                      --icon=src/icon.ico \
+          pyinstaller --onefile --windowed `
+                      --icon=src/icon.ico `
                       --name "ibus2cin-gui-windows" src/main.py
 
       - name: Upload Windows Artifact
