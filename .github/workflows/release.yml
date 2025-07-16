@@ -10,7 +10,7 @@ on:
 
 jobs:
   build_macos_x64:
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -46,7 +46,7 @@ jobs:
           path: dist/ibus2cin-gui-macos-x64.zip
 
   build_macos_arm64:
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
