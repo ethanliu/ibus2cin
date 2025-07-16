@@ -1,10 +1,12 @@
 name: Build and Release Binaries
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'
   workflow_dispatch: # Allows you to manually trigger the workflow from the GitHub UI
+  push:
+    # tags:
+    #   - 'v*.*.*'
+    branches:
+      - test
 
 jobs:
   build_macos_x64:
