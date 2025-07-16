@@ -2,7 +2,7 @@
 # coding=utf8
 #
 # ibus2cin
-# a cin table conversion tool
+# a ibus db to cin table converter
 # https://github.com/ethanliu/ibus2cin
 #
 # version: 3.0.0
@@ -26,7 +26,7 @@ class T(Enum):
     OutputLabel = "Convert to CIN table file"
     InputButton = "Select..."
     OutputButton = "Convert"
-    FileDialogDescription = "Select SQLite file"
+    FileDialogDescription = "Select a iBus database file"
     Copyright = "This program is distributed to help legal users but without any warranty.\nhttps://github.com/ethanliu/ibus2cin"
     ErrorFileNotFound = 'File not found {0}'
     ErrorFileOpenFailed = 'The file is invalid or corrupt and cannot be opened {0}'
@@ -245,7 +245,7 @@ class App(ttk.Frame):
         ttk.Label(left, text = '無', style = 'Logo.TLabel').grid(row = 0, column = 0)
         ttk.Label(right, text = 'ibus2cin', style = 'Branding.TLabel').grid(row = 0, column = 1, sticky = 'WS')
         ttk.Label(right, text = 'Ver.' + self.version).grid(row = 1, column = 1, sticky = 'W')
-        ttk.Label(right, text = 'CIN Table Conversion Tool').grid(row = 2, column = 1, sticky = 'WN')
+        ttk.Label(right, text = 'CIN Table Converter').grid(row = 2, column = 1, sticky = 'WN')
 
     def addFooterView(self, parent):
         label = tk.Label(parent, text = T.Copyright, font = ('Helvetica', 10), fg='#666')
