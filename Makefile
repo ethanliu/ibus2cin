@@ -1,69 +1,52 @@
 SHELL = /bin/sh
+APP_NAME = ibus2cin
+DIST_DIR = dist
+BIN_DIR = bin
 
-.PHONY: usage all clean
+# Force CGO off for truly static, portable binaries
+export CGO_ENABLED = 0
 
-default: usage
+.PHONY: all clean macos linux windows
 
-all: clean x86 amd64
+all: clean macos linux windows
 
-x86: clean darwin386 linux386 win386
-	@make cleanbin
+macos: darwin-arm64 darwin-amd64
+linux: linux-arm64 linux-amd64
+windows: win-arm64 win-amd64
 
-amd64: clean darwin linux win
-	@make cleanbin
+# macOS
+darwin-arm64: tidy
+	$(call build_go,darwin,arm64,)
+darwin-amd64: tidy
+	$(call build_go,darwin,amd64,)
 
-usage:
-	@echo "make [OPTION]"
-	@echo
-	@echo "OPTIONS:"
-	@echo "	all - Bull x86 and amd64 arch"
-	@echo "	x86 - Build ony 386 arch"
-	@echo "	amd64 - Build only amd64 arch"
+# Linux
+linux-arm64: tidy
+	$(call build_go,linux,arm64,)
+linux-amd64: tidy
+	$(call build_go,linux,amd64,)
 
-config:
-	@[ -d "bin" ] || mkdir -p "bin"
-	@[ -d "build" ] || mkdir -p "build"
-	@[ -d "dist" ] || mkdir -p "dist"
+# Windows
+win-arm64: tidy
+	$(call build_go,windows,arm64,.exe)
+win-amd64: tidy
+	$(call build_go,windows,amd64,.exe)
 
-py:
-# pyinstaller --windowed --noconsole --onefile src/main.py
-	@-rm -fr build/*
-	@-rm -fr dist/*
-	pyinstaller main.spec
-
-clean: config cleanbin
-	@-rm -fr dist/*
-
-cleanbin:
-	@-rm -fr bin/*
-
-darwin386:
-	$(call build,darwin,386)
-
-darwin:
-	$(call build,darwin,amd64)
-
-linux386:
-	$(call build,linux,386)
-
-linux:
-	$(call build,linux,amd64)
-
-win386:
-	$(info Building windows-x86)
-	@GOOS=windows GOARCH=386 CGO_ENABLED=1 CC=/usr/local/opt/mingw-w64/bin/i686-w64-mingw32-gcc go build -o bin/ibus2cin.exe
-	@tar zcf dist/ibus2cin-windows-386.tar.gz -C bin ibus2cin.exe
-
-win:
-	$(info Building windows-amd64)
-	@GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=/usr/local/opt/mingw-w64/bin/x86_64-w64-mingw32-gcc go build -o bin/ibus2cin.exe
-	@tar zcf dist/ibus2cin-windows-amd64.tar.gz -C bin ibus2cin.exe
-
-define build
+define build_go
 	$(eval OS := $(1))
 	$(eval ARCH := $(2))
-	$(info Building ${OS}-${ARCH})
-	@GOOS=${OS} GOARCH=${ARCH} go build -o bin/ibus2cin
-	@tar zcf dist/ibus2cin-${OS}-${ARCH}.tar.gz -C bin ibus2cin
+	$(eval EXT := $(3))
+	@echo "Building $(OS)-$(ARCH)..."
+	@[ -d "$(BIN_DIR)" ] || mkdir -p "$(BIN_DIR)"
+	@[ -d "$(DIST_DIR)" ] || mkdir -p "$(DIST_DIR)"
+	GOOS=$(OS) GOARCH=$(ARCH) go build -trimpath -o $(BIN_DIR)/$(APP_NAME)$(EXT)
+	tar zcf $(DIST_DIR)/$(APP_NAME)-$(OS)-$(ARCH).tar.gz -C $(BIN_DIR) $(APP_NAME)$(EXT)
 endef
 
+tidy:
+	go mod tidy
+	go mod download
+
+clean:
+	@-rm -fr $(BIN_DIR)/*
+	@-rm -fr $(DIST_DIR)/*
