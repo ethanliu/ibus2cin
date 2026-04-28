@@ -1,3 +1,5 @@
+.PHONY: all clean macos linux windows
+
 SHELL = /bin/sh
 APP_NAME = ibus2cin
 DIST_DIR = dist
@@ -6,7 +8,16 @@ BIN_DIR = bin
 # Force CGO off for truly static, portable binaries
 export CGO_ENABLED = 0
 
-.PHONY: all clean macos linux windows
+usage:
+	@echo "ibus2cin Build System"
+	@echo "Usage: make [target]"
+	@echo
+	@echo "Targets:"
+	@echo "  all      - Build for all platforms (Linux, macOS, Windows)"
+	@echo "  macos    - Build for macOS (Intel & Apple Silicon)"
+	@echo "  linux    - Build for Linux (amd64 & arm64)"
+	@echo "  windows  - Build for Windows (amd64 & arm64)"
+	@echo "  clean    - Remove build artifacts and binaries"
 
 all: clean macos linux windows
 
