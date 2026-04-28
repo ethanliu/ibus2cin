@@ -21,6 +21,7 @@ import (
 )
 
 const (
+	appVersion            = "2.1.0"
 	defaultTableVersion   = "2.1"
 	defaultOutputFileName = "[iBus-file].cin"
 	tmpDatabaseFile       = "tmp.db"
@@ -33,7 +34,7 @@ var (
 )
 
 func usage() {
-	fmt.Printf("ibus2cin - version 2.1.0\n")
+	fmt.Printf("ibus2cin - version %s\n", appVersion)
 	fmt.Println("Convert iBus Boshiamy databases into standard .cin tables.")
 	fmt.Println("Source: https://github.com/ethanliu/ibus2cin")
 	fmt.Println("\nUsage:")

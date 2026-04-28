@@ -1,42 +1,33 @@
 # ibus2cin
 
-[![GitHub release](https://img.shields.io/badge/release-v2.0.2-green.svg)](https://github.com/ethanliu/ibus2cin/releases/)
+[![GitHub release](https://img.shields.io/github/v/release/ethanliu/ibus2cin?color=green)](https://github.com/ethanliu/ibus2cin/releases/)
 
 將行易官網提供的嘸蝦米 iBus 表格，轉換為一般通用的 CIN 表格工具程式
 
 如果您先前曾使用 v2 之前的版本，請重新以 v2 重新產生新的 CIN 表格檔。  
 舊版有兩個字根判斷錯誤，因此有些符號會無法組字。
 
-<p align="center">
-    <img width="768" src="https://rawgit.com/ethanliu/ibus2cin/master/term-sheet.svg?sanitize=true">
-</p>
-
 ## 使用方式
 
 將 ibus2cin 或 ibus2cin.exe 與自行易官網下載的 iBus 檔案解壓縮後，存放於同一個資料夾。  
 開啟終端機或命令列視窗，切換至此資料夾下後執行 ibus2cin，Windows 平台則是執行 ibus2cin.exe
 
-    > ./ibus2cin
+    $ ./ibus2cin
+    ibus2cin - version 2.1.0
+    Convert iBus Boshiamy databases into standard .cin tables.
+    Source: https://github.com/ethanliu/ibus2cin
 
-    ibus2cin - version 2.0.2
-    Generate CIN table from iBus database provided by boshiamy.com.
-    This program is distributed to help legal users, but without any warranty.
-    Source code repo: https://github.com/ethanliu/ibus2cin
+    Usage:
+    ./ibus2cin [OPTIONS] <iBus-db-file>
 
-        語法:
-          ./ibus2cin [參數] iBus-表格檔
+    Options:
+    -o string
+            Output file path (default "[iBus-file].cin")
+    -v string
+            Boshiamy cin table version (1.1 or 2.1) (default "2.1")
 
-        範例:
-          ./ibus2cin boshiamy-ibus-1-8-x/boshiamy_t.db
-          ./ibus2cin -v 1.1 boshiamy-ibus/boshiamy_t.db
-          ./ibus2cin -v 1.1 -o boshiamy.cin boshiamy-ibus/boshiamy_t.db
-
-        參數:
-          -o string
-                輸出的 CIN 表格檔名 (預設為 "[iBus-表格檔].cin")
-          -v string
-                嘸蝦米表格檔版本 (預設為 "2.1")
-
+    Example:
+    ./ibus2cin -v 2.1 -o boshiamy.cin boshiamy_t.db
 
 ### 什麼是 iBus
 
